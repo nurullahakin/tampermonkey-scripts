@@ -17,6 +17,7 @@
             gap: 4rem;
             padding: 4rem;
             background-color: hsl(0, 0%, 0%, 0.05);
+            box-shadow: inset 0 0 30px 20px white;
         }
 
         .js-diff-container .js-diff-progressive-container + .js-diff-container .js-diff-progressive-container {
