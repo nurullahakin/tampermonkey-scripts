@@ -98,6 +98,9 @@ function improveUI() {
             display: flex;
             align-items: flex-start;
         }
+        #files-container {
+            flex-grow: 1;
+        }
         #commits-aside-container .select-menu-list {
             max-height: 60vh;
         }
