@@ -12,27 +12,29 @@
 (function () {
     let markedCommits = getMarkedCommitHashes();
 
-    document.querySelectorAll("a[href*='/commits/']").forEach(function (link) {
-        let linkCommitHash = getCommitHashFromLink(link);
+    window.addEventListener("load", function () {
+        document.querySelectorAll("a[href*='/commits/']").forEach(function (link) {
+            let linkCommitHash = getCommitHashFromLink(link);
 
-        if (markedCommits.includes(linkCommitHash)) {
-            markLink(link);
-        }
+            if (markedCommits.includes(linkCommitHash)) {
+                markLink(link);
+            }
 
-        link.addEventListener("click", function (e) {
-            if (e.button !== 0) {
-                return;
-            }
-            markLink(this);
-            markCommit(linkCommitHash);
-        });
-        
-        link.addEventListener("auxclick", function (e) {
-            if (e.button !== 1) {
-                return;
-            }
-            markLink(this);
-            markCommit(linkCommitHash);
+            link.addEventListener("click", function (e) {
+                if (e.button !== 0) {
+                    return;
+                }
+                markLink(this);
+                markCommit(linkCommitHash);
+            });
+
+            link.addEventListener("auxclick", function (e) {
+                if (e.button !== 1) {
+                    return;
+                }
+                markLink(this);
+                markCommit(linkCommitHash);
+            });
         });
     });
 
