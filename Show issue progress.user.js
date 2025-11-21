@@ -78,7 +78,6 @@
                         .issue-progress-badge .task-counts .total-count {
                             color: hsl(240deg 50% 40%);
                         }
-
                         progress.issue-progress-bar {
                             appearance: none;
                             height: 8px;
