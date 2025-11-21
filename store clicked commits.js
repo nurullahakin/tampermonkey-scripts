@@ -10,33 +10,33 @@
 // ==/UserScript==
 
 (function () {
-    document.querySelectorAll('code a.markdown-title').forEach(function (link) {
-        link.addEventListener('mousedown', function (e) {
+    document.querySelectorAll("code a.markdown-title").forEach(function (link) {
+        link.addEventListener("mousedown", function (e) {
             if (e.button === 0 || e.button === 1) {
-                var href = this.getAttribute('href');
-                var parts = href.split('/');
-                var codeParent = this.closest('code');
+                var href = this.getAttribute("href");
+                var parts = href.split("/");
+                var codeParent = this.closest("code");
                 if (codeParent) {
-                    codeParent.style.opacity = '0.5';
+                    codeParent.style.opacity = "0.5";
                 }
                 var lastPart = parts[parts.length - 1];
-                lastPart = lastPart.replace(/['"]/g, '');
-                var clickedCommits = JSON.parse(localStorage.getItem('clickedCommits')) || [];
+                lastPart = lastPart.replace(/['"]/g, "");
+                var clickedCommits = JSON.parse(localStorage.getItem("clickedCommits")) || [];
                 if (!clickedCommits.includes(lastPart)) {
                     clickedCommits.push(lastPart);
-                    localStorage.setItem('clickedCommits', JSON.stringify(clickedCommits));
+                    localStorage.setItem("clickedCommits", JSON.stringify(clickedCommits));
                 }
             }
         });
 
-        var clickedCommits = JSON.parse(localStorage.getItem('clickedCommits')) || [];
-        var href = link.getAttribute('href');
-        var parts = href.split('/');
-        var lastPart = parts[parts.length - 1].replace(/['"]/g, '');
+        var clickedCommits = JSON.parse(localStorage.getItem("clickedCommits")) || [];
+        var href = link.getAttribute("href");
+        var parts = href.split("/");
+        var lastPart = parts[parts.length - 1].replace(/['"]/g, "");
         if (clickedCommits.includes(lastPart)) {
-            var storedCodeParent = link.closest('code');
+            var storedCodeParent = link.closest("code");
             if (storedCodeParent) {
-                storedCodeParent.style.opacity = '0.5';
+                storedCodeParent.style.opacity = "0.5";
             }
         }
     });
