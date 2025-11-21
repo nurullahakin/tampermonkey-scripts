@@ -15,37 +15,27 @@
     // #region ==================== APP
 
     window.addEventListener("load", function () {
-        analyzeTasks();
+        showProgress();
     });
 
-    function analyzeTasks() {
+    function showProgress() {
+        let headerStateEl = qs('[data-testid="header-state"]');
+        let headerStateContainer = headerStateEl.parentElement;
+        headerStateContainer.classList.add("header-state-container");
+
+        let newElsContainer = htmlFromString(`
+            <div style="display: flex; flex-grow: 1;"></div>
+        `)[0];
+        headerStateContainer.parentElement.append(newElsContainer);
+
         let issueBody = qs('[data-testid="markdown-body"]');
-
-        let checkboxes = Array.from(qsa("input[type=checkbox]", issueBody));
-
-        let totalCount = checkboxes.length;
-        let tickedCount = checkboxes.filter((cb) => cb.checked).length;
+        let allCheckboxes = Array.from(qsa("input[type=checkbox]", issueBody));
+        let totalCount = allCheckboxes.length;
+        let tickedCount = allCheckboxes.filter((cb) => cb.checked).length;
         let untickedCount = totalCount - tickedCount;
 
-        let headerStateEl = qs('[data-testid="header-state"]');
-        headerStateEl.parentElement.classList.add("header-state-container");
-
-        document.head.append(
-            htmlFromString(`
-                <style>
-                    .header-state-container {
-                        display: flex;
-                        align-items: center;
-                        width: 100%;
-                    }
-                </style>
-            `)[0]
-        );
-
-        let progressBadgeEl = null;
-
         badge: {
-            progressBadgeEl = htmlFromString(`
+            let progressBadgeEl = htmlFromString(`
                 <div class="issue-progress-badge">
                     <div class="task-counts">
                         <div class="done-count">${tickedCount}</div>
@@ -57,8 +47,7 @@
                     <div>tasks</div>
                 </div>
             `)[0];
-            headerStateEl.after(progressBadgeEl);
-
+            newElsContainer.append(progressBadgeEl);
             document.head.append(
                 htmlFromString(`
                     <style>
@@ -69,7 +58,6 @@
                             border-radius: 1rem;
                             border: 1px solid hsl(0deg 0% 0% / 20%);
                             padding: 0.1rem 0.7rem;
-                            margin-left: 1rem;
                             color: hsl(0deg 0% 0% / 60%);
                             vertical-align: 2px;
                         }
@@ -90,6 +78,37 @@
                         .issue-progress-badge .task-counts .total-count {
                             color: hsl(240deg 50% 40%);
                         }
+                        progress.issue-progress-bar {
+                            appearance: none;
+                            height: 8px;
+                        }
+                        progress.issue-progress-bar::-webkit-progress-bar {
+                            border-radius: 10px;
+                            overflow: hidden;
+                            background-color: hsl(0deg 0% 50% / 50%) !important;
+                        }
+                        progress.issue-progress-bar::-webkit-progress-value {
+                            background-color: hsl(210deg 85% 50% / 75%) !important;
+                        }
+
+                        @media (prefers-color-scheme: dark) {
+                            .issue-progress-badge {
+                                color: hsl(0deg 0% 100% / 70%);
+                                border: 1px solid hsl(0deg 0% 100% / 30%);
+                            }
+                            .issue-progress-badge .task-counts .task-count-separator {
+                                color: hsl(0deg 0% 100% / 30%);
+                            }
+                            .issue-progress-badge .task-counts .done-count {
+                                color: hsl(120deg 70% 45%);
+                            }
+                            .issue-progress-badge .task-counts .undone-count {
+                                color: hsl(0deg 80% 60%);
+                            }
+                            .issue-progress-badge .task-counts .total-count {
+                                color: hsl(240deg 100% 75%);
+                            }
+                        }
                     </style>
                 `)[0]
             );
@@ -104,7 +123,7 @@
                     <span>%${progressPercent}</span>
                 </div>
             `)[0];
-            progressBadgeEl.after(progressBarEl);
+            newElsContainer.append(progressBarEl);
             document.head.append(
                 htmlFromString(`
                     <style>
