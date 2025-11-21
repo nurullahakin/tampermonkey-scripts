@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Remember Clicked Commits
+// @name         Mark Clicked Commits
 // @namespace    https://github.com/buluterol
 // @version      2025-07-22
-// @description  Remember clicked commits in GitHub pull requests
+// @description  Marks clicked commits in GitHub PR
 // @author       buluterol
 // @match        https://github.com/*/*/pull/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
