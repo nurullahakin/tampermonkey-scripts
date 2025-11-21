@@ -10,36 +10,52 @@
 // ==/UserScript==
 
 (function () {
-    document.querySelectorAll("code a.markdown-title").forEach(function (link) {
+    let markedCommits = getMarkedCommitHashes();
+
+    document.querySelectorAll("a[href*='/commits/']").forEach(function (link) {
+        let linkCommitHash = getCommitHashFromLink(link);
+
+        if (markedCommits.includes(linkCommitHash)) {
+            markLink(link);
+        }
+
         link.addEventListener("click", function (e) {
-            // Target only left clicks
             if (e.button !== 0) {
                 return;
             }
-            var href = this.getAttribute("href");
-            var parts = href.split("/");
-            var codeParent = this.closest("code");
-            if (codeParent) {
-                codeParent.style.opacity = "0.5";
-            }
-            var lastPart = parts[parts.length - 1];
-            lastPart = lastPart.replace(/['"]/g, "");
-            var clickedCommits = JSON.parse(localStorage.getItem("clickedCommits")) || [];
-            if (!clickedCommits.includes(lastPart)) {
-                clickedCommits.push(lastPart);
-                localStorage.setItem("clickedCommits", JSON.stringify(clickedCommits));
-            }
+            markLink(this);
+            markCommit(linkCommitHash);
         });
-
-        var clickedCommits = JSON.parse(localStorage.getItem("clickedCommits")) || [];
-        var href = link.getAttribute("href");
-        var parts = href.split("/");
-        var lastPart = parts[parts.length - 1].replace(/['"]/g, "");
-        if (clickedCommits.includes(lastPart)) {
-            var storedCodeParent = link.closest("code");
-            if (storedCodeParent) {
-                storedCodeParent.style.opacity = "0.5";
+        
+        link.addEventListener("auxclick", function (e) {
+            if (e.button !== 1) {
+                return;
             }
-        }
+            markLink(this);
+            markCommit(linkCommitHash);
+        });
     });
+
+    function getCommitHashFromLink(link) {
+        let href = link.getAttribute("href");
+        let parts = href.split("/");
+        return parts[parts.length - 1];
+    }
+
+    function markLink(link) {
+        link.style.opacity = "0.5";
+    }
+
+    function getMarkedCommitHashes() {
+        let stored = localStorage.getItem("markedCommits");
+        return stored ? JSON.parse(stored) : [];
+    }
+
+    function markCommit(commitHash) {
+        let markedCommits = getMarkedCommitHashes();
+        if (!markedCommits.includes(commitHash)) {
+            markedCommits.push(commitHash);
+            localStorage.setItem("markedCommits", JSON.stringify(markedCommits));
+        }
+    }
 })();
