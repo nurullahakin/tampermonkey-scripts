@@ -11,21 +11,23 @@
 
 (function () {
     document.querySelectorAll("code a.markdown-title").forEach(function (link) {
-        link.addEventListener("mousedown", function (e) {
-            if (e.button === 0 || e.button === 1) {
-                var href = this.getAttribute("href");
-                var parts = href.split("/");
-                var codeParent = this.closest("code");
-                if (codeParent) {
-                    codeParent.style.opacity = "0.5";
-                }
-                var lastPart = parts[parts.length - 1];
-                lastPart = lastPart.replace(/['"]/g, "");
-                var clickedCommits = JSON.parse(localStorage.getItem("clickedCommits")) || [];
-                if (!clickedCommits.includes(lastPart)) {
-                    clickedCommits.push(lastPart);
-                    localStorage.setItem("clickedCommits", JSON.stringify(clickedCommits));
-                }
+        link.addEventListener("click", function (e) {
+            // Target only left clicks
+            if (e.button !== 0) {
+                return;
+            }
+            var href = this.getAttribute("href");
+            var parts = href.split("/");
+            var codeParent = this.closest("code");
+            if (codeParent) {
+                codeParent.style.opacity = "0.5";
+            }
+            var lastPart = parts[parts.length - 1];
+            lastPart = lastPart.replace(/['"]/g, "");
+            var clickedCommits = JSON.parse(localStorage.getItem("clickedCommits")) || [];
+            if (!clickedCommits.includes(lastPart)) {
+                clickedCommits.push(lastPart);
+                localStorage.setItem("clickedCommits", JSON.stringify(clickedCommits));
             }
         });
 
