@@ -70,7 +70,7 @@ function improveUI() {
 
     let selectedCommitEls = [];
     let selectMenuItems = detailsMenuElClone.querySelectorAll(".js-diffbar-range-list .select-menu-item");
-    for (i = 0; i < selectMenuItems.length; i++) {
+    for (let i = 0; i < selectMenuItems.length; i++) {
         let selectMenuItem = selectMenuItems[i];
         let indexEl = document.createElement("div");
         indexEl.classList.add("commit-index");
@@ -165,21 +165,16 @@ function improveUI() {
             min-width: 25px;
             opacity: 0.25;
         }
+        #diff-layout-component {
+            width: 100%;
+        }
     `;
     asideContainer.append(style);
 
     events: {
-        let prevCommitButton = document.querySelector("a[id*=prev-commit]");
-        if (prevCommitButton) {
-            prevCommitButton.addEventListener("click", () => {
-                setTimeout(() => {
-                    improveUI();
-                }, 3000);
-            });
-        }
-        let nextCommitButton = document.querySelector("a[id*=next-commit]");
-        if (nextCommitButton) {
-            nextCommitButton.addEventListener("click", () => {
+        let navigationButtons = document.querySelectorAll("a[id*=prev-commit], a[id*=next-commit]");
+        for (let navigationButton of navigationButtons) {
+            navigationButton.addEventListener("click", () => {
                 setTimeout(() => {
                     improveUI();
                 }, 3000);
