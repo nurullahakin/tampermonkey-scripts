@@ -38,6 +38,9 @@
         }
 
         @media (prefers-color-scheme: dark) {
+            .js-diff-container .js-diff-progressive-container {
+                box-shadow: inset 0 0 30px 20px #0d1117;
+            }
             .js-diff-container .file {
                 background-color: hsl(0deg 0% 100% / 5%);
                 box-shadow: 0px 5px 10px 0px hsl(0deg 0% 0% / 20%);
