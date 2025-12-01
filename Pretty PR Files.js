@@ -5,6 +5,7 @@
 // @description  Makes the files more readable by spacing.
 // @author       Nurullah Akın
 // @match        https://github.com/*/*/pull/*/files
+// @match        https://github.com/*/*/pull/*/commits/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
 // @grant        none
 // ==/UserScript==
