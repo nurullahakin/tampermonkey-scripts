@@ -141,6 +141,8 @@ function improveUI() {
             border: 1px solid silver;
             border-color: var(--borderColor-default, var(--color-border-default));
             border-radius: var(--borderRadius-medium);
+            position: sticky;
+            top: 150px;
         }
         #commits-aside-container details-menu .select-menu-header {
             background: var(--bgColor-muted, var(--color-canvas-subtle));
