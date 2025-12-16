@@ -27,7 +27,7 @@
 
         .js-diff-container .file {
             background-color: white;
-            box-shadow: 0px 5px 10px 0px hsl(0deg 0% 0% / 20%);
+            box-shadow: 0px 3px 10px 0px hsl(0deg 0% 0% / 20%);
         }
 
         .file-info a {
@@ -44,7 +44,7 @@
             }
             .js-diff-container .file {
                 background-color: hsl(0deg 0% 100% / 5%);
-                box-shadow: 0px 5px 10px 0px hsl(0deg 0% 0% / 20%);
+                box-shadow: 0px 3px 10px 0px hsl(0deg 0% 0% / 20%);
             }
         }
     `;
