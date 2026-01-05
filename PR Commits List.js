@@ -137,7 +137,7 @@ function improveUI() {
             color: white;
         }
         #commits-aside-container details-menu {
-            width: 400px;
+            min-width: 500px;
             border: 1px solid silver;
             border-color: var(--borderColor-default, var(--color-border-default));
             border-radius: var(--borderRadius-medium);
@@ -166,6 +166,11 @@ function improveUI() {
         #commits-aside-container .commit-index {
             min-width: 25px;
             opacity: 0.25;
+        }
+        #commits-aside-container .select-menu-item-text > div {
+            overflow: auto;
+            text-overflow: initial;
+            white-space: normal;
         }
         #diff-layout-component {
             width: 100%;
