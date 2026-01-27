@@ -3,7 +3,7 @@
 // @namespace    https://github.com/nurullahakin
 // @version      2025-06-03
 // @description  Show task progress in issues
-// @author       Noreh AD
+// @author       Nurullah Akın
 // @match        https://github.com/*/*/issues/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
 // @grant        none

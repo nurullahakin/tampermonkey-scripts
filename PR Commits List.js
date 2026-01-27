@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         PR Commits List
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/nurullahakin
 // @version      2025-09-29
-// @description  try to take over the world!
-// @author       You
+// @description  Visible commits list on PR commit diffs
+// @author       Nurullah Akın
 // @match        https://github.com/*/*/pull/*/commits/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
 // @grant        none
