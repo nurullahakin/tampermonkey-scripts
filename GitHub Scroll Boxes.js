@@ -42,7 +42,7 @@
 
     let customStyleText = `
         .scroll-container {
-            max-height: 60vh;
+            max-height: 50vh;
             overflow: auto;
             background-color: hsl(0, 0%, 0%, 0.025);
         }
