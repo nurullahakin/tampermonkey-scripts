@@ -50,6 +50,11 @@
         .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative {
             margin-right: 0 !important;
         }
+        @media (prefers-color-scheme: dark) {
+            .scroll-container {
+                background-color: hsl(0, 0%, 100%, 0.05);
+            }
+        }
     `;
     let customStyleEl = document.createElement("style");
     customStyleEl.textContent = customStyleText;
