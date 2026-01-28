@@ -5,6 +5,7 @@
 // @description  Create arbitrary scroll boxes in GitHub issues by placing special markers in the issue body.
 // @author       Nurullah Akın
 // @match        https://github.com/*/*/issues/*
+// @match        https://github.com/*/*/pull/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
 // @grant        none
 // ==/UserScript==
@@ -24,7 +25,7 @@
         return ["--scroll-box--", "--scroll-container--"].includes(el.textContent.trim());
     }
 
-    let issueBodyEl = document.querySelector("#issue-body-viewer");
+    let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
 
     let scrollContainerMarkerEls = [];
 
