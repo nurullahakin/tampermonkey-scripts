@@ -12,6 +12,14 @@
 (function () {
     "use strict";
 
+    function chunk(arr, size) {
+        const result = [];
+        for (let i = 0; i < arr.length; i += size) {
+            result.push(arr.slice(i, i + size));
+        }
+        return result;
+    }
+
     function isScrollContainerMarker(el) {
         return ["--scroll-box--", "--scroll-container--"].includes(el.textContent.trim());
     }
@@ -31,31 +39,33 @@
         return;
     }
 
-    let scrollContainerEl = document.createElement("div");
-    scrollContainerEl.className = "scroll-container";
-
     let customStyleText = `
-    .scroll-container {
-        max-height: 60vh;
-        overflow: auto;
-        background-color: hsl(0, 0%, 0%, 0.025);
-    }
-    .scroll-container [class*="TaskListItems-module__task-list-item--"] > div.position-relative,
-    .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative {
-        margin-right: 0 !important;
-    }
-`;
+        .scroll-container {
+            max-height: 60vh;
+            overflow: auto;
+            background-color: hsl(0, 0%, 0%, 0.025);
+        }
+        .scroll-container [class*="TaskListItems-module__task-list-item--"] > div.position-relative,
+        .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative {
+            margin-right: 0 !important;
+        }
+    `;
     let customStyleEl = document.createElement("style");
     customStyleEl.textContent = customStyleText;
     document.head.append(customStyleEl);
 
-    scrollContainerMarkerEls[0].replaceWith(scrollContainerEl);
+    let scrollContainerMarkers = chunk(scrollContainerMarkerEls, 2);
 
-    while (!isScrollContainerMarker(scrollContainerEl.nextElementSibling)) {
-        scrollContainerEl.append(scrollContainerEl.nextElementSibling);
-    }
+    for (let markerEls of scrollContainerMarkers) {
+        let scrollContainerEl = document.createElement("div");
+        scrollContainerEl.className = "scroll-container";
 
-    if (isScrollContainerMarker(scrollContainerEl.nextElementSibling)) {
-        scrollContainerEl.nextElementSibling.remove();
+        markerEls[0].replaceWith(scrollContainerEl);
+
+        while (!isScrollContainerMarker(scrollContainerEl.nextElementSibling)) {
+            scrollContainerEl.append(scrollContainerEl.nextElementSibling);
+        }
+
+        markerEls[1].remove();
     }
 })();
