@@ -47,7 +47,9 @@
             background-color: hsl(0, 0%, 0%, 0.025);
         }
         .scroll-container [class*="TaskListItems-module__task-list-item--"] > div.position-relative,
-        .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative {
+        .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative,
+        .scroll-container .task-list-item
+        {
             margin-right: 0 !important;
         }
         @media (prefers-color-scheme: dark) {
