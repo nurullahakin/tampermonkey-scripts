@@ -71,6 +71,25 @@
         return scrollContainerMarkerEls;
     }
 
+    function handleAutoRender() {
+        let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
+        let checkboxes = issueBodyEl.querySelectorAll("input[type=checkbox]");
+        for (let checkbox of checkboxes) {
+            if (checkbox.isClickListenerAdded) {
+                continue;
+            }
+            checkbox.addEventListener("click", () => {
+                setTimeout(() => {
+                    renderScrollContainers();
+                    setTimeout(() => {
+                        renderScrollContainers();
+                    }, 1000);
+                }, 1000);
+            });
+            checkbox.isClickListenerAdded = true;
+        }
+    }
+
     function renderScrollContainers() {
         let scrollContainerMarkerEls = getScrollContainerMarkerEls();
         if (scrollContainerMarkerEls.length == 0) {
@@ -93,6 +112,8 @@
 
             markerEls[1].remove();
         }
+
+        handleAutoRender();
     }
 
     renderScrollContainers();
