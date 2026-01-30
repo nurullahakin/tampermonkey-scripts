@@ -25,21 +25,6 @@
         return /^-+ *scroll-(?:box|container) *-+$/.test(el.textContent.trim());
     }
 
-    let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
-
-    let scrollContainerMarkerEls = [];
-
-    let scrollContainerMarkerElCandidates = issueBodyEl.querySelectorAll("p");
-    for (let candEl of scrollContainerMarkerElCandidates) {
-        if (isScrollContainerMarker(candEl)) {
-            scrollContainerMarkerEls.push(candEl);
-        }
-    }
-
-    if (scrollContainerMarkerEls.length == 0) {
-        return;
-    }
-
     function injectCustomStyles() {
         if (document.querySelector("#scroll-box-styles")) {
             return;
@@ -72,6 +57,21 @@
         customStyleEl.id = "scroll-box-styles";
         customStyleEl.textContent = customStyleText;
         document.head.append(customStyleEl);
+    }
+
+    let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
+
+    let scrollContainerMarkerEls = [];
+
+    let scrollContainerMarkerElCandidates = issueBodyEl.querySelectorAll("p");
+    for (let candEl of scrollContainerMarkerElCandidates) {
+        if (isScrollContainerMarker(candEl)) {
+            scrollContainerMarkerEls.push(candEl);
+        }
+    }
+
+    if (scrollContainerMarkerEls.length == 0) {
+        return;
     }
 
     injectCustomStyles();
