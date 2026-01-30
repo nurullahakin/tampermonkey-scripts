@@ -40,33 +40,37 @@
         return;
     }
 
-    let customStyleText = `
-        .scroll-container {
-            max-height: 50vh;
-            overflow: auto;
-            background-color: hsl(0, 0%, 0%, 0.025);
-        }
-        .scroll-container [class*="TaskListItems-module__task-list-item--"] > div.position-relative,
-        .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative,
-        .scroll-container .task-list-item
-        {
-            margin-right: 0 !important;
-        }
-        .scroll-container pre {
-            background-color: hsl(210deg 28% 96%);
-        }
-        @media (prefers-color-scheme: dark) {
+    function injectCustomStyles() {
+        let customStyleText = `
             .scroll-container {
-                background-color: hsl(0, 0%, 100%, 0.05);
+                max-height: 50vh;
+                overflow: auto;
+                background-color: hsl(0, 0%, 0%, 0.025);
+            }
+            .scroll-container [class*="TaskListItems-module__task-list-item--"] > div.position-relative,
+            .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative,
+            .scroll-container .task-list-item
+            {
+                margin-right: 0 !important;
             }
             .scroll-container pre {
-                background-color: hsl(215deg 25% 15%);
+                background-color: hsl(210deg 28% 96%);
             }
-        }
-    `;
-    let customStyleEl = document.createElement("style");
-    customStyleEl.textContent = customStyleText;
-    document.head.append(customStyleEl);
+            @media (prefers-color-scheme: dark) {
+                .scroll-container {
+                    background-color: hsl(0, 0%, 100%, 0.05);
+                }
+                .scroll-container pre {
+                    background-color: hsl(215deg 25% 15%);
+                }
+            }
+        `;
+        let customStyleEl = document.createElement("style");
+        customStyleEl.textContent = customStyleText;
+        document.head.append(customStyleEl);
+    }
+
+    injectCustomStyles();
 
     let scrollContainerMarkers = chunk(scrollContainerMarkerEls, 2);
 
