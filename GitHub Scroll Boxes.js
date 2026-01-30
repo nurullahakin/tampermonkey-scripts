@@ -71,25 +71,29 @@
         return scrollContainerMarkerEls;
     }
 
-    let scrollContainerMarkerEls = getScrollContainerMarkerEls();
-    if (scrollContainerMarkerEls.length == 0) {
-        return;
-    }
-
-    injectCustomStyles();
-
-    let scrollContainerMarkers = chunk(scrollContainerMarkerEls, 2);
-
-    for (let markerEls of scrollContainerMarkers) {
-        let scrollContainerEl = document.createElement("div");
-        scrollContainerEl.className = "scroll-container";
-
-        markerEls[0].replaceWith(scrollContainerEl);
-
-        while (!isScrollContainerMarker(scrollContainerEl.nextElementSibling)) {
-            scrollContainerEl.append(scrollContainerEl.nextElementSibling);
+    function renderScrollContainers() {
+        let scrollContainerMarkerEls = getScrollContainerMarkerEls();
+        if (scrollContainerMarkerEls.length == 0) {
+            return;
         }
 
-        markerEls[1].remove();
+        injectCustomStyles();
+
+        let scrollContainerMarkers = chunk(scrollContainerMarkerEls, 2);
+
+        for (let markerEls of scrollContainerMarkers) {
+            let scrollContainerEl = document.createElement("div");
+            scrollContainerEl.className = "scroll-container";
+
+            markerEls[0].replaceWith(scrollContainerEl);
+
+            while (!isScrollContainerMarker(scrollContainerEl.nextElementSibling)) {
+                scrollContainerEl.append(scrollContainerEl.nextElementSibling);
+            }
+
+            markerEls[1].remove();
+        }
     }
+
+    renderScrollContainers();
 })();
