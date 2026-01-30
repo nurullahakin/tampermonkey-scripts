@@ -22,7 +22,7 @@
     }
 
     function isScrollContainerMarker(el) {
-        return ["--scroll-box--", "--scroll-container--"].includes(el.textContent.trim());
+        return /^-+ *scroll-(?:box|container) *-+$/.test(el.textContent.trim());
     }
 
     let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
