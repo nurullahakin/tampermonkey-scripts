@@ -52,9 +52,15 @@
         {
             margin-right: 0 !important;
         }
+        .scroll-container pre {
+            background-color: hsl(210deg 28% 96%);
+        }
         @media (prefers-color-scheme: dark) {
             .scroll-container {
                 background-color: hsl(0, 0%, 100%, 0.05);
+            }
+            .scroll-container pre {
+                background-color: hsl(215deg 25% 15%);
             }
         }
     `;
