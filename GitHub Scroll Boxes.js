@@ -41,6 +41,9 @@
     }
 
     function injectCustomStyles() {
+        if (document.querySelector("#scroll-box-styles")) {
+            return;
+        }
         let customStyleText = `
             .scroll-container {
                 max-height: 50vh;
@@ -66,6 +69,7 @@
             }
         `;
         let customStyleEl = document.createElement("style");
+        customStyleEl.id = "scroll-box-styles";
         customStyleEl.textContent = customStyleText;
         document.head.append(customStyleEl);
     }
