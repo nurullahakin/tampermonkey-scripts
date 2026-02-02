@@ -37,6 +37,8 @@
             }
             .scroll-container [class*="TaskListItems-module__task-list-item--"] > div.position-relative,
             .scroll-container [class*="TaskListItems-module__bullet-task-item--"] > div.position-relative,
+            .scroll-container [class*="TaskListItems-module__task-list-item__"] > div.position-relative,
+            .scroll-container [class*="TaskListItems-module__bullet-task-item__"] > div.position-relative,
             .scroll-container .task-list-item
             {
                 margin-right: 0 !important;
