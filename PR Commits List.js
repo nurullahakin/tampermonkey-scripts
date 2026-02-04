@@ -68,6 +68,15 @@ function improveUI() {
     detailsMenuElClone.style.zIndex = "0";
     asideContainer.prepend(detailsMenuElClone);
 
+    let closeButtonEl = document.createElement("button");
+    closeButtonEl.classList.add("remove-btn");
+    closeButtonEl.innerText = "×";
+    closeButtonEl.title = "Remove Commits List";
+    closeButtonEl.addEventListener("click", function (e) {
+        this.closest("details-menu").remove();
+    });
+    detailsMenuElClone.querySelector(".select-menu-header").append(closeButtonEl);
+
     let selectedCommitEls = [];
     let selectMenuItems = detailsMenuElClone.querySelectorAll(".js-diffbar-range-list .select-menu-item");
     for (let i = 0; i < selectMenuItems.length; i++) {
@@ -100,6 +109,17 @@ function improveUI() {
         }
         #files-container {
             flex-grow: 1;
+        }
+        #commits-aside-container .select-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #commits-aside-container .select-menu-header .remove-btn {
+            border: none;
+            background-color: hsl(0deg 100% 50% / 15%);
+            border-radius: 5px;
+            color: hsl(0deg 90% 45% / 75%);
         }
         #commits-aside-container .select-menu-list {
             max-height: 60vh;
