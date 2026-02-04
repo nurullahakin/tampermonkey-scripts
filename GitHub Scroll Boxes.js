@@ -13,6 +13,10 @@
 (function () {
     "use strict";
 
+    if (location.href.match(/\/pull\/\d+\/.+/)) {
+        return;
+    }
+
     function chunk(arr, size) {
         const result = [];
         for (let i = 0; i < arr.length; i += size) {
