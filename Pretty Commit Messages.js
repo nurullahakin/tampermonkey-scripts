@@ -73,6 +73,20 @@ function prettifyCommitMessages() {
             }
         }
     }
+
+    if (pageType.isPRCommits) {
+        let commitEls = document.querySelectorAll("[class*=CommitRow-module__ListItem_");
+        for (let commitEl of commitEls) {
+            let messageLinkEl = commitEl.querySelector("h4 a");
+            let commitMessage = messageLinkEl.textContent.trim();
+            let parsedMessage = parseCommitMessage(commitMessage);
+            if (parsedMessage.type || parsedMessage.scope) {
+                addPrettyCommitMessageStyles();
+                let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage);
+                messageLinkEl.innerHTML = newCommitMessageEl.outerHTML;
+            }
+        }
+    }
 }
 
 // #region ==================== PAGE: PR COMMIT
