@@ -39,12 +39,6 @@ function main() {
     });
 }
 
-// #region ==================== PAGE: PR CIMMIT
-
-function getCommitHeadingElement() {
-    return document.querySelector("[class*=prc-PageLayout-ContentWrapper-] h2");
-}
-
 function prettifyCommitMessages() {
     let pageType = detectPageType();
     if (pageType.isPRCommit) {
@@ -66,6 +60,12 @@ function prettifyCommitMessages() {
             firstLineEl.replaceWith(newCommitMessageEl);
         }
     }
+}
+
+// #region ==================== PAGE: PR CIMMIT
+
+function getCommitHeadingElement() {
+    return document.querySelector("[class*=prc-PageLayout-ContentWrapper-] h2");
 }
 
 // #endregion
