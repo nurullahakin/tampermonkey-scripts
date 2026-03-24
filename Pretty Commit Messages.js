@@ -74,7 +74,7 @@ function prettifyCommitMessages() {
         }
     }
 
-    if (pageType.isPRCommits) {
+    if (pageType.isPRCommits || pageType.isCommits) {
         let commitEls = document.querySelectorAll("[class*=CommitRow-module__ListItem_");
         for (let commitEl of commitEls) {
             let messageLinkEl = commitEl.querySelector("h4 a");
