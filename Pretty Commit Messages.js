@@ -29,11 +29,11 @@ function main() {
     if (!pageType.isPRCommit) {
         return;
     }
-    prettifyCommitMessage();
+    prettifyCommitMessages();
     createUrlChangeListener({
         onChange: ({ prevUrl, currentUrl }) => {
             setTimeout(() => {
-                new Ifterval(getCommitHeadingElement, prettifyCommitMessage, 5, 1000, true);
+                new Ifterval(getCommitHeadingElement, prettifyCommitMessages, 5, 1000, true);
             }, 500);
         },
     });
@@ -45,7 +45,7 @@ function getCommitHeadingElement() {
     return document.querySelector("[class*=prc-PageLayout-ContentWrapper-] h2");
 }
 
-function prettifyCommitMessage() {
+function prettifyCommitMessages() {
     let pageType = detectPageType();
     if (!pageType.isPRCommit) {
         return;
