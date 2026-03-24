@@ -103,8 +103,6 @@ function prettifyCommitMessage() {
             let scopeEl = document.createElement("span");
             scopeEl.classList.add("commit-scope");
             scopeEl.textContent = parsed.scope;
-            scopeEl.style.cssText = `
-        `;
             newCommitMessageEl.appendChild(scopeEl);
         }
         let descriptionEl = document.createElement("span");
