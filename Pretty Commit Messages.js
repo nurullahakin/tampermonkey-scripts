@@ -39,18 +39,6 @@ function main() {
     });
 }
 
-function detectPageType() {
-    let url = location.href;
-    let result = {
-        isPRConversation: url.match(/\/pull\/\d+$/) !== null,
-        isPRCommits: url.match(/\/pull\/\d+\/commits$/) !== null,
-        isPRCommit: url.match(/\/pull\/\d+\/changes\/\w+$/) !== null,
-        isCommits: url.match(/\/commits\/\w+$/) !== null,
-        isCommit: url.match(/\/commit\/\w+$/) !== null,
-    };
-    return result;
-}
-
 // #region ==================== PAGE: PR CIMMIT
 
 function getCommitHeadingElement() {
@@ -130,6 +118,18 @@ function prettifyCommitMessage() {
 // #endregion
 
 // #region ==================== UTILS
+
+function detectPageType() {
+    let url = location.href;
+    let result = {
+        isPRConversation: url.match(/\/pull\/\d+$/) !== null,
+        isPRCommits: url.match(/\/pull\/\d+\/commits$/) !== null,
+        isPRCommit: url.match(/\/pull\/\d+\/changes\/\w+$/) !== null,
+        isCommits: url.match(/\/commits\/\w+$/) !== null,
+        isCommit: url.match(/\/commit\/\w+$/) !== null,
+    };
+    return result;
+}
 
 function parseCommitMessage(message) {
     let result = {
