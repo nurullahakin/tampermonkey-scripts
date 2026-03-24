@@ -221,6 +221,17 @@ function createUrlChangeListener(options = {}) {
     };
 }
 
+function intervalUntil(stopConditionCallback, handlerCallback, interval = 100, maxAttempts = 2) {
+    let attempts = 0;
+    let timerHandle = setInterval(() => {
+        attempts++;
+        handlerCallback();
+        if (stopConditionCallback() || attempts >= maxAttempts) {
+            clearInterval(timerHandle);
+        }
+    }, interval);
+}
+
 /**
  * Allows one to perform an action in a chaotic (in regard to time) system.
  */
