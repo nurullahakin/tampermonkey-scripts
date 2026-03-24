@@ -25,13 +25,12 @@
 })();
 
 function main() {
+    window.areCommitsPrettified = false;
     prettifyCommitMessages();
     if (!window.ucl) {
         window.ucl = createUrlChangeListener({
             onChange: ({ prevUrl, currentUrl }) => {
-                setTimeout(() => {
-                    new Ifterval(getPRCommitHeadingElement, prettifyCommitMessages, 5, 1000, true);
-                }, 500);
+                intervalUntil(() => window.areCommitsPrettified, main, 1000, 5);
             },
         });
     }
@@ -57,6 +56,7 @@ function prettifyCommitMessages() {
             let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage);
             firstLineEl.replaceWith(newCommitMessageEl);
         }
+        window.areCommitsPrettified = true;
     }
 }
 
