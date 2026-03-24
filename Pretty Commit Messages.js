@@ -24,9 +24,9 @@
     }, 5000);
 })();
 
-function main() {
+async function main() {
     window.areCommitsPrettified = false;
-    prettifyCommitMessages();
+    await prettifyCommitMessages();
     if (!window.ucl) {
         window.ucl = createUrlChangeListener({
             onChange: ({ prevUrl, currentUrl }) => {
@@ -36,7 +36,7 @@ function main() {
     }
 }
 
-function prettifyCommitMessages() {
+async function prettifyCommitMessages() {
     let pageType = detectPageType();
     if (pageType.isPRCommit) {
         let commitHeadingEl = getPRCommitHeadingElement();
@@ -75,6 +75,9 @@ function prettifyCommitMessages() {
     }
 
     if (pageType.isPRCommits || pageType.isCommits) {
+        if (pageType.isCommits) {
+            await sleep(1000);
+        }
         let commitEls = document.querySelectorAll("[class*=CommitRow-module__ListItem_");
         for (let commitEl of commitEls) {
             let messageLinkEl = commitEl.querySelector("h4 a");
