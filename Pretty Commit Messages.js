@@ -163,6 +163,17 @@ function addPrettyCommitMessageStyles() {
         .commit-description {
             background-color: hsl(210deg 100% 50% / 20%);
         }
+        @media (prefers-color-scheme: dark) {
+            .commit-type {
+                background-color: hsl(0deg 100% 60% / 40%);
+            }
+            .commit-scope {
+                background-color: hsl(135deg 100% 50% / 25%)
+            }
+            .commit-description {
+                background-color: hsl(210deg 100% 50% / 30%);
+            }
+        }
     `;
     document.head.appendChild(styleEl);
 }
