@@ -108,7 +108,11 @@ function parseCommitMessage(message) {
 }
 
 function addPrettyCommitMessageStyles() {
+    if (document.querySelector("style#pretty-commit-messages-styles")) {
+        return;
+    }
     let styleEl = document.createElement("style");
+    styleEl.id = "pretty-commit-messages-styles";
     styleEl.textContent = `
         .commit-message {
             display: flex;
