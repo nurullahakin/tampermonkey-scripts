@@ -144,14 +144,14 @@ function addPrettyCommitMessageStyles() {
     styleEl.id = "pretty-commit-messages-styles";
     styleEl.textContent = `
         .commit-message {
-            display: flex;
+            display: inline-flex;
             gap: 0.5rem;
         }
         .commit-type,
         .commit-scope,
         .commit-description {
             background-color: hsl(0deg 0% 0% / 15%);
-            padding: 0.2rem 0.5rem;
+            padding: 0.1rem 0.4rem;
             border-radius: 0.3rem;
         }
         .commit-type {
