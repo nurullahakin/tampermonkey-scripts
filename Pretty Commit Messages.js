@@ -72,6 +72,8 @@ async function prettifyCommitMessages() {
                 messageLinkEl.innerHTML = newCommitMessageEl.outerHTML;
             }
         }
+        window.areCommitsPrettified = true;
+        return;
     }
 
     if (pageType.isPRCommits || pageType.isCommits) {
@@ -89,6 +91,8 @@ async function prettifyCommitMessages() {
                 messageLinkEl.innerHTML = newCommitMessageEl.outerHTML;
             }
         }
+        window.areCommitsPrettified = true;
+        return;
     }
 }
 
