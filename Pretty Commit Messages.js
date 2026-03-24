@@ -99,6 +99,10 @@ function getPRCommitHeadingElement() {
 
 // #region ==================== UTILS
 
+async function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function detectPageType() {
     let url = location.href;
     let result = {
