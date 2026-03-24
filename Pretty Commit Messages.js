@@ -129,6 +129,8 @@ function prettifyCommitMessage() {
 
 // #endregion
 
+// #region ==================== UTILS
+
 function parseCommitMessage(message) {
     let result = {
         type: null,
@@ -278,3 +280,5 @@ class Ifterval {
         return this.#timerHandle !== null;
     }
 }
+
+// #endregion
