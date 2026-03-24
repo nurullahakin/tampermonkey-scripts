@@ -67,30 +67,7 @@ function prettifyCommitMessage() {
     let parsed = parseCommitMessage(commitMessage);
 
     if (parsed.type || parsed.scope) {
-        let styleEl = document.createElement("style");
-        styleEl.textContent = `
-            .commit-message {
-                display: flex;
-                gap: 1rem;
-            }
-            .commit-type,
-            .commit-scope,
-            .commit-description {
-                background-color: hsl(0deg 0% 0% / 15%);
-                padding: 0.2rem 0.5rem;
-                border-radius: 0.3rem;
-            }
-            .commit-type {
-                background-color: hsl(0deg 100% 50% / 15%);
-            }
-            .commit-scope {
-                background-color: hsl(135deg 100% 50% / 20%);
-            }
-            .commit-description {
-                background-color: hsl(210deg 100% 50% / 20%);
-            }
-        `;
-        document.head.appendChild(styleEl);
+        addPrettyCommitMessageStyles();
         let newCommitMessageEl = createPrettyCommitMessageEl(parsed);
         firstLineEl.replaceWith(newCommitMessageEl);
     }
@@ -133,6 +110,33 @@ function parseCommitMessage(message) {
     // the rest is the description
     result.description = message;
     return result;
+}
+
+function addPrettyCommitMessageStyles() {
+    let styleEl = document.createElement("style");
+    styleEl.textContent = `
+        .commit-message {
+            display: flex;
+            gap: 1rem;
+        }
+        .commit-type,
+        .commit-scope,
+        .commit-description {
+            background-color: hsl(0deg 0% 0% / 15%);
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+        }
+        .commit-type {
+            background-color: hsl(0deg 100% 50% / 15%);
+        }
+        .commit-scope {
+            background-color: hsl(135deg 100% 50% / 20%);
+        }
+        .commit-description {
+            background-color: hsl(210deg 100% 50% / 20%);
+        }
+    `;
+    document.head.appendChild(styleEl);
 }
 
 function createPrettyCommitMessageEl(parsedMessage) {
