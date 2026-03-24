@@ -47,29 +47,27 @@ function getCommitHeadingElement() {
 
 function prettifyCommitMessages() {
     let pageType = detectPageType();
-    if (!pageType.isPRCommit) {
-        return;
-    }
+    if (pageType.isPRCommit) {
+        let commitHeadingEl = getCommitHeadingElement();
 
-    let commitHeadingEl = getCommitHeadingElement();
+        if (!commitHeadingEl) {
+            console.warn("[TM > Pretty Commit Messages] Commit heading element not found");
+            return;
+        }
 
-    if (!commitHeadingEl) {
-        console.warn("[TM > Pretty Commit Messages] Commit heading element not found");
-        return;
-    }
+        let firstLineEl = commitHeadingEl.querySelector("div");
+        if (!firstLineEl) {
+            console.warn("[TM > Pretty Commit Messages] First line element not found");
+            return;
+        }
+        let commitMessage = firstLineEl.textContent.trim();
+        let parsed = parseCommitMessage(commitMessage);
 
-    let firstLineEl = commitHeadingEl.querySelector("div");
-    if (!firstLineEl) {
-        console.warn("[TM > Pretty Commit Messages] First line element not found");
-        return;
-    }
-    let commitMessage = firstLineEl.textContent.trim();
-    let parsed = parseCommitMessage(commitMessage);
-
-    if (parsed.type || parsed.scope) {
-        addPrettyCommitMessageStyles();
-        let newCommitMessageEl = createPrettyCommitMessageEl(parsed);
-        firstLineEl.replaceWith(newCommitMessageEl);
+        if (parsed.type || parsed.scope) {
+            addPrettyCommitMessageStyles();
+            let newCommitMessageEl = createPrettyCommitMessageEl(parsed);
+            firstLineEl.replaceWith(newCommitMessageEl);
+        }
     }
 }
 
