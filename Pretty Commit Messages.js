@@ -4,7 +4,7 @@
 // @version      2026-03-24
 // @description  Formats commit messages in a more readable way.
 // @author       Nurullah Akın
-// @match        https://github.com/*/*/pull/*/changes/*
+// @match        https://github.com/*/*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
 // @grant        none
 // ==/UserScript==
@@ -25,6 +25,10 @@
 })();
 
 function main() {
+    let pageType = detectPageType();
+    if (!pageType.isPRCommit) {
+        return;
+    }
     prettifyCommitMessage();
     createUrlChangeListener({
         onChange: ({ prevUrl, currentUrl }) => {
@@ -35,11 +39,30 @@ function main() {
     });
 }
 
+function detectPageType() {
+    let url = location.href;
+    let result = {
+        isPRConversation: url.match(/\/pull\/\d+$/) !== null,
+        isPRCommits: url.match(/\/pull\/\d+\/commits$/) !== null,
+        isPRCommit: url.match(/\/pull\/\d+\/changes\/\w+$/) !== null,
+        isCommits: url.match(/\/commits\/\w+$/) !== null,
+        isCommit: url.match(/\/commit\/\w+$/) !== null,
+    };
+    return result;
+}
+
+// #region ==================== PAGE: PR CIMMIT
+
 function getCommitHeadingElement() {
     return document.querySelector("[class*=prc-PageLayout-ContentWrapper-] h2");
 }
 
 function prettifyCommitMessage() {
+    let pageType = detectPageType();
+    if (!pageType.isPRCommit) {
+        return;
+    }
+
     let commitHeadingEl = getCommitHeadingElement();
 
     if (!commitHeadingEl) {
@@ -103,6 +126,8 @@ function prettifyCommitMessage() {
         firstLineEl.replaceWith(newCommitMessageEl);
     }
 }
+
+// #endregion
 
 function parseCommitMessage(message) {
     let result = {
