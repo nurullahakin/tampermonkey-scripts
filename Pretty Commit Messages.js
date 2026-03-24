@@ -25,10 +25,6 @@
 })();
 
 function main() {
-    let pageType = detectPageType();
-    if (!pageType.isPRCommit) {
-        return;
-    }
     prettifyCommitMessages();
     createUrlChangeListener({
         onChange: ({ prevUrl, currentUrl }) => {
