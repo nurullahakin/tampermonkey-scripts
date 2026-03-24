@@ -91,24 +91,7 @@ function prettifyCommitMessage() {
             }
         `;
         document.head.appendChild(styleEl);
-        let newCommitMessageEl = document.createElement("div");
-        newCommitMessageEl.classList.add("commit-message");
-        if (parsed.type) {
-            let typeEl = document.createElement("span");
-            typeEl.classList.add("commit-type");
-            typeEl.textContent = parsed.type;
-            newCommitMessageEl.appendChild(typeEl);
-        }
-        if (parsed.scope) {
-            let scopeEl = document.createElement("span");
-            scopeEl.classList.add("commit-scope");
-            scopeEl.textContent = parsed.scope;
-            newCommitMessageEl.appendChild(scopeEl);
-        }
-        let descriptionEl = document.createElement("span");
-        descriptionEl.classList.add("commit-description");
-        descriptionEl.textContent = parsed.description;
-        newCommitMessageEl.appendChild(descriptionEl);
+        let newCommitMessageEl = createPrettyCommitMessageEl(parsed);
         firstLineEl.replaceWith(newCommitMessageEl);
     }
 }
@@ -150,6 +133,28 @@ function parseCommitMessage(message) {
     // the rest is the description
     result.description = message;
     return result;
+}
+
+function createPrettyCommitMessageEl(parsedMessage) {
+    let newCommitMessageEl = document.createElement("div");
+    newCommitMessageEl.classList.add("commit-message");
+    if (parsedMessage.type) {
+        let typeEl = document.createElement("span");
+        typeEl.classList.add("commit-type");
+        typeEl.textContent = parsedMessage.type;
+        newCommitMessageEl.appendChild(typeEl);
+    }
+    if (parsedMessage.scope) {
+        let scopeEl = document.createElement("span");
+        scopeEl.classList.add("commit-scope");
+        scopeEl.textContent = parsedMessage.scope;
+        newCommitMessageEl.appendChild(scopeEl);
+    }
+    let descriptionEl = document.createElement("span");
+    descriptionEl.classList.add("commit-description");
+    descriptionEl.textContent = parsedMessage.description;
+    newCommitMessageEl.appendChild(descriptionEl);
+    return newCommitMessageEl;
 }
 
 function createUrlChangeListener(options = {}) {
