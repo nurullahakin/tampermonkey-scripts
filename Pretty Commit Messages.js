@@ -49,23 +49,20 @@ function prettifyCommitMessages() {
     let pageType = detectPageType();
     if (pageType.isPRCommit) {
         let commitHeadingEl = getCommitHeadingElement();
-
         if (!commitHeadingEl) {
             console.warn("[TM > Pretty Commit Messages] Commit heading element not found");
             return;
         }
-
         let firstLineEl = commitHeadingEl.querySelector("div");
         if (!firstLineEl) {
             console.warn("[TM > Pretty Commit Messages] First line element not found");
             return;
         }
         let commitMessage = firstLineEl.textContent.trim();
-        let parsed = parseCommitMessage(commitMessage);
-
-        if (parsed.type || parsed.scope) {
+        let parsedMessage = parseCommitMessage(commitMessage);
+        if (parsedMessage.type || parsedMessage.scope) {
             addPrettyCommitMessageStyles();
-            let newCommitMessageEl = createPrettyCommitMessageEl(parsed);
+            let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage);
             firstLineEl.replaceWith(newCommitMessageEl);
         }
     }
@@ -83,7 +80,9 @@ function detectPageType() {
         isPRCommit: url.match(/\/pull\/\d+\/changes\/\w+$/) !== null,
         isCommits: url.match(/\/commits\/\w+$/) !== null,
         isCommit: url.match(/\/commit\/\w+$/) !== null,
+        isTargetPage: false,
     };
+    result.isTargetPage = Object.values(result).some((v) => v);
     return result;
 }
 
