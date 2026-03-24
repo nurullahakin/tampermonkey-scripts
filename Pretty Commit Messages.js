@@ -112,7 +112,7 @@ function addPrettyCommitMessageStyles() {
     styleEl.textContent = `
         .commit-message {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
         }
         .commit-type,
         .commit-scope,
