@@ -58,7 +58,7 @@ function prettifyCommitMessages() {
     }
 }
 
-// #region ==================== PAGE: PR CIMMIT
+// #region ==================== PAGE: PR COMMIT
 
 function getPRCommitHeadingElement() {
     return document.querySelector("[class*=prc-PageLayout-ContentWrapper-] h2");
