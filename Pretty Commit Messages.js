@@ -33,7 +33,7 @@ function main() {
     createUrlChangeListener({
         onChange: ({ prevUrl, currentUrl }) => {
             setTimeout(() => {
-                new Ifterval(getCommitHeadingElement, prettifyCommitMessages, 5, 1000, true);
+                new Ifterval(getPRCommitHeadingElement, prettifyCommitMessages, 5, 1000, true);
             }, 500);
         },
     });
@@ -42,7 +42,7 @@ function main() {
 function prettifyCommitMessages() {
     let pageType = detectPageType();
     if (pageType.isPRCommit) {
-        let commitHeadingEl = getCommitHeadingElement();
+        let commitHeadingEl = getPRCommitHeadingElement();
         if (!commitHeadingEl) {
             console.warn("[TM > Pretty Commit Messages] Commit heading element not found");
             return;
@@ -64,7 +64,7 @@ function prettifyCommitMessages() {
 
 // #region ==================== PAGE: PR CIMMIT
 
-function getCommitHeadingElement() {
+function getPRCommitHeadingElement() {
     return document.querySelector("[class*=prc-PageLayout-ContentWrapper-] h2");
 }
 
