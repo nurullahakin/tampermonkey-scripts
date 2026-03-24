@@ -26,13 +26,15 @@
 
 function main() {
     prettifyCommitMessages();
-    createUrlChangeListener({
-        onChange: ({ prevUrl, currentUrl }) => {
-            setTimeout(() => {
-                new Ifterval(getPRCommitHeadingElement, prettifyCommitMessages, 5, 1000, true);
-            }, 500);
-        },
-    });
+    if (!window.ucl) {
+        window.ucl = createUrlChangeListener({
+            onChange: ({ prevUrl, currentUrl }) => {
+                setTimeout(() => {
+                    new Ifterval(getPRCommitHeadingElement, prettifyCommitMessages, 5, 1000, true);
+                }, 500);
+            },
+        });
+    }
 }
 
 function prettifyCommitMessages() {
