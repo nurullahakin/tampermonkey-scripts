@@ -57,6 +57,21 @@ function prettifyCommitMessages() {
             firstLineEl.replaceWith(newCommitMessageEl);
         }
         window.areCommitsPrettified = true;
+        return;
+    }
+
+    if (pageType.isPRConversation) {
+        let commitEls = document.querySelectorAll(".TimelineItem-body .js-details-container");
+        for (let commitEl of commitEls) {
+            let messageLinkEl = commitEl.querySelector("code a");
+            let commitMessage = messageLinkEl.textContent.trim();
+            let parsedMessage = parseCommitMessage(commitMessage);
+            if (parsedMessage.type || parsedMessage.scope) {
+                addPrettyCommitMessageStyles();
+                let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage);
+                messageLinkEl.innerHTML = newCommitMessageEl.outerHTML;
+            }
+        }
     }
 }
 
