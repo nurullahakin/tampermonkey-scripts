@@ -168,6 +168,9 @@ function addPrettyCommitMessageStyles() {
     let styleEl = document.createElement("style");
     styleEl.id = "pretty-commit-messages-styles";
     styleEl.textContent = `
+        h2:has(span > .commit-message) > span {
+            display: block;
+        }
         .commit-message {
             display: inline-flex;
             gap: 0.5rem;
