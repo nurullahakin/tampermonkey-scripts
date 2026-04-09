@@ -130,7 +130,7 @@ function detectPageType() {
         isPRConversation: url.match(/\/pull\/\d+$/) !== null,
         isPRCommits: url.match(/\/pull\/\d+\/commits$/) !== null,
         isPRCommit: url.match(/\/pull\/\d+\/changes\/\w+$/) !== null,
-        isCommits: url.match(/\/commits\/\w+\/?$/) !== null,
+        isCommits: url.match(/\/commits\/\w+\/?/) !== null,
         isCommit: url.match(/\/commit\/\w+$/) !== null,
         isTargetPage: false,
     };
