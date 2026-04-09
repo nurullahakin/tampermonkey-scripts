@@ -53,7 +53,7 @@ async function prettifyCommitMessages() {
         let parsedMessage = parseCommitMessage(commitMessage);
         if (parsedMessage.type || parsedMessage.scope) {
             addPrettyCommitMessageStyles();
-            let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage);
+            let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage, true);
             firstLineEl.replaceWith(newCommitMessageEl);
         }
         window.areCommitsPrettified = true;
@@ -102,7 +102,7 @@ async function prettifyCommitMessages() {
         let parsedMessage = parseCommitMessage(commitMessage);
         if (parsedMessage.type || parsedMessage.scope) {
             addPrettyCommitMessageStyles();
-            let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage);
+            let newCommitMessageEl = createPrettyCommitMessageEl(parsedMessage, true);
             firstLineEl.replaceWith(newCommitMessageEl);
         }
         window.areCommitsPrettified = true;
@@ -206,7 +206,7 @@ function addPrettyCommitMessageStyles() {
     document.head.appendChild(styleEl);
 }
 
-function createPrettyCommitMessageEl(parsedMessage) {
+function createPrettyCommitMessageEl(parsedMessage, includeCopyButton = false) {
     let container = document.createElement("div");
     container.style.cssText = `display: inline-flex; align-items: center; gap: 1rem;`;
     let newCommitMessageEl = document.createElement("div");
@@ -227,29 +227,31 @@ function createPrettyCommitMessageEl(parsedMessage) {
     descriptionEl.classList.add("commit-description");
     descriptionEl.textContent = parsedMessage.description;
     newCommitMessageEl.appendChild(descriptionEl);
-    let copyButton = document.createElement("button");
-    copyButton.textContent = "Copy";
-    copyButton.style.cssText = `
-        padding: 0.15rem 0.3rem;
-        font-size: 0.7rem;
-        color: hsl(0deg 0% 0% / 70%);
-        border: none;
-        border-radius: 0.3rem;
-        background-color: rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-        line-height: 1.2;
-    `;
-    copyButton.addEventListener("click", () => {
-        navigator.clipboard.writeText(
-            `${parsedMessage.type ? `(${parsedMessage.type}) ` : ""}${parsedMessage.scope ? `${parsedMessage.scope}: ` : ""}${parsedMessage.description}`,
-        );
-        copyButton.textContent = "Copied!";
-        setTimeout(() => {
-            copyButton.textContent = "Copy";
-        }, 1000);
-    });
     container.appendChild(newCommitMessageEl);
-    container.append(copyButton);
+    if (includeCopyButton) {
+        let copyButton = document.createElement("button");
+        copyButton.textContent = "Copy";
+        copyButton.style.cssText = `
+            padding: 0.15rem 0.3rem;
+            font-size: 0.7rem;
+            color: hsl(0deg 0% 0% / 70%);
+            border: none;
+            border-radius: 0.3rem;
+            background-color: rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            line-height: 1.2;
+        `;
+        copyButton.addEventListener("click", () => {
+            navigator.clipboard.writeText(
+                `${parsedMessage.type ? `(${parsedMessage.type}) ` : ""}${parsedMessage.scope ? `${parsedMessage.scope}: ` : ""}${parsedMessage.description}`,
+            );
+            copyButton.textContent = "Copied!";
+            setTimeout(() => {
+                copyButton.textContent = "Copy";
+            }, 1000);
+        });
+        container.append(copyButton);
+    }
     return container;
 }
 
