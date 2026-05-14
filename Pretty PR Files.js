@@ -76,5 +76,10 @@
         styleSheet.type = "text/css";
         styleSheet.textContent = styles;
         document.head.appendChild(styleSheet);
+        document
+            .querySelectorAll(`[class*="DiffFileHeader-module__diff-file-header__"] > div:nth-child(3)`)
+            .forEach((el) => {
+                el.classList.remove("gap-2"); // somehow not overridable with !important
+            });
     });
 })();
