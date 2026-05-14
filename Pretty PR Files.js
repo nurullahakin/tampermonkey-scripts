@@ -32,10 +32,32 @@
             border-bottom-right-radius: var(--borderRadius-medium, 6px) !important;
             border-bottom-left-radius: var(--borderRadius-medium, 6px) !important;
         }
-        /* file headers/paths */
+        /* file header > file path */
         [class*="DiffFileHeader-module__file-name__"] a code {
             font-weight: 600;
             font-size: 0.8rem;
+        }
+        /* file header > right side container */
+        [class*="DiffFileHeader-module__diff-file-header__"] > div:nth-child(3) {
+            gap: 1rem !important;
+        }
+        /* file header > right side > diff */
+        div[class*=DiffFileHeader-module__hide-on-mobile__] > div {
+            gap: 0.5rem !important;
+        }
+        /* file header > right side > diff */
+        div[class*=DiffFileHeader-module__hide-on-mobile__] span {
+            font-size: 1rem !important;
+        }
+        /* file header > right side > diff > square container */
+        div[class*=DiffFileHeader-module__hide-on-mobile__] > div > div {
+            margin-top: 1px;
+            opacity: 0.8;
+        }
+        /* file header > right side > diff > square */
+        [class*="DiffSquares-module__diffSquare__"] {
+            width: 10px !important;
+            height: 10px !important;
         }
         @media (prefers-color-scheme: dark) {
             /* file cards container */
