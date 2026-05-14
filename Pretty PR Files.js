@@ -74,7 +74,7 @@
     window.addEventListener("load", () => {
         let styleSheet = document.createElement("style");
         styleSheet.type = "text/css";
-        styleSheet.innerText = styles;
+        styleSheet.textContent = styles;
         document.head.appendChild(styleSheet);
     });
 })();
