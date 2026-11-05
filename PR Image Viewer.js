@@ -40,9 +40,11 @@
   .prig-cap{flex:1;opacity:.75;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .prig-btn{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:13px;text-decoration:none}
   .prig-btn:hover{background:rgba(255,255,255,.25);color:#fff;text-decoration:none}
-  .prig-stage{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;min-height:0;padding-bottom:52px}
+  .prig-stage{flex:1;overflow:visible;display:flex;align-items:center;justify-content:center;min-height:0;padding-bottom:52px}
   .prig-stage img{max-width:calc(100vw - 140px);max-height:100%;object-fit:contain;user-select:none}
-  .prig-stage.prig-zoom{align-items:flex-start;justify-content:flex-start;padding:96px 144px}
+  .prig-stage.prig-multi{padding-bottom:0}
+  .prig-stage.prig-zoom{overflow:auto;scrollbar-width:none;align-items:flex-start;justify-content:flex-start;padding:96px 144px}
+  .prig-stage.prig-zoom::-webkit-scrollbar{display:none}
   .prig-stage.prig-zoom img{max-width:none;max-height:none;flex:none;margin:auto;cursor:grab}
   .prig-stage.prig-multi img{cursor:grab}
   .prig-stage.prig-drag img{cursor:grabbing}
@@ -50,6 +52,11 @@
   .prig-lb.prig-swipe-r,.prig-lb.prig-swipe-r *{cursor:${CURSOR_LEFT} !important}
   .prig-nav{position:fixed;top:50%;transform:translateY(-50%);width:52px;height:80px;font-size:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;line-height:1;padding:0 0 6px}
   .prig-prev{left:8px}.prig-next{right:8px}
+  .prig-strip{flex:none;display:flex;gap:8px;justify-content:safe center;overflow-x:auto;padding:10px 12px 14px;scrollbar-width:thin}
+  .prig-thumb{flex:none;height:64px;padding:0;border:2px solid transparent;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;cursor:pointer;opacity:.5;transition:opacity .12s,border-color .12s}
+  .prig-thumb:hover{opacity:.85}
+  .prig-thumb.prig-active{opacity:1;border-color:#fff}
+  .prig-thumb img{display:block;height:100%;max-width:120px;object-fit:cover;pointer-events:none}
   `;
   document.head.appendChild(style);
 
@@ -182,9 +189,23 @@
     lb = el('div', { class: 'prig-lb', role: 'dialog', 'aria-modal': 'true' },
       el('div', { class: 'prig-top' }, count, cap, openLink, closeBtn), stage);
 
+    // Thumbnail gallery at the bottom (multiple images only); click to switch.
+    const thumbs = items.length > 1
+      ? items.map((it, i) => el('button', { class: 'prig-thumb', title: it.alt || `Image ${i + 1}`, onclick: () => go(i) },
+          el('img', { src: it.thumb, alt: '', draggable: 'false' })))
+      : [];
+
     if (items.length > 1) {
       stage.classList.add('prig-multi');
+      const strip = el('div', { class: 'prig-strip' }, ...thumbs);
+      // vertical wheel scrolls the strip horizontally
+      strip.addEventListener('wheel', (e) => {
+        if (!e.deltaY || strip.scrollWidth <= strip.clientWidth) return;
+        e.preventDefault();
+        strip.scrollLeft += e.deltaY;
+      }, { passive: false });
       lb.append(
+        strip,
         el('button', { class: 'prig-btn prig-nav prig-prev', title: 'Previous (←)', onclick: () => go(idx - 1) }, '‹'),
         el('button', { class: 'prig-btn prig-nav prig-next', title: 'Next (→)', onclick: () => go(idx + 1) }, '›'),
       );
@@ -204,6 +225,8 @@
       openLink.href = it.full;
       count.textContent = `${idx + 1} / ${items.length}`;
       cap.textContent = it.alt || '';
+      thumbs.forEach((t, i) => t.classList.toggle('prig-active', i === idx));
+      thumbs[idx]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
 
     lb._key = (e) => {
