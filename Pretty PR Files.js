@@ -24,7 +24,7 @@
             box-shadow: inset 0 0 30px 20px white;
         }
         /* file cards */
-        [class*="PullRequestDiffsList-module__diffEntry__"] {
+        [class*="diffEntry__"] {
             background-color: white;
             box-shadow: 0px 3px 10px 0px hsl(0deg 0% 0% / 20%);
             border-top-left-radius: var(--borderRadius-medium);
@@ -33,29 +33,29 @@
             border-bottom-left-radius: var(--borderRadius-medium, 6px) !important;
         }
         /* file header > file path */
-        [class*="DiffFileHeader-module__file-name__"] a code {
+        [class*="diff-file-header__"] a code {
             font-weight: 600;
             font-size: 0.8rem;
         }
         /* file header > right side container */
-        [class*="DiffFileHeader-module__diff-file-header__"] > div:nth-child(3) {
+        [class*="diff-file-header__"] > div:nth-child(3) {
             gap: 1rem !important;
         }
-        /* file header > right side > diff */
-        div[class*=DiffFileHeader-module__hide-on-mobile__] > div {
+        /* file header > right side > changes */
+        div[class*="diff-file-header__"] div[class*="hide-on-mobile__"] > div {
             gap: 0.5rem !important;
         }
-        /* file header > right side > diff */
-        div[class*=DiffFileHeader-module__hide-on-mobile__] span {
+        /* file header > right side > changes */
+        div[class*="diff-file-header__"] div[class*="hide-on-mobile__"] span {
             font-size: 1rem !important;
         }
-        /* file header > right side > diff > square container */
-        div[class*=DiffFileHeader-module__hide-on-mobile__] > div > div {
+        /* file header > right side > changes > square container */
+        div[class*="diff-file-header__"] div[class*="hide-on-mobile__"] > div > div {
             margin-top: 1px;
             opacity: 0.8;
         }
-        /* file header > right side > diff > square */
-        [class*="DiffSquares-module__diffSquare__"] {
+        /* file header > right side > changes > square */
+        [class*="diffSquare__"] {
             width: 10px !important;
             height: 10px !important;
         }
@@ -65,7 +65,7 @@
                 box-shadow: inset 0 0 30px 20px #0d1117;
             }
             /* file cards */
-            [class*="PullRequestDiffsList-module__diffEntry__"] {
+            [class*="diffEntry__"] {
                 background-color: hsl(0deg 0% 100% / 5%);
                 box-shadow: 0px 3px 10px 0px hsl(0deg 0% 0% / 20%);
             }
