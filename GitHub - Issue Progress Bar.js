@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Show issue progress
+// @name         GitHub - Issue - Progress Bar
 // @namespace    https://github.com/nurullahakin
 // @version      2025-06-03
 // @description  Show task progress in issues

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Mark Clicked Commits
+// @name         GitHub - Mark Clicked Commits
 // @namespace    https://github.com/buluterol
 // @version      2025-07-22
 // @description  Marks clicked commits in GitHub PR

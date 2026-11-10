@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         PR Commits List
+// @name         GitHub - PR - Commits List
 // @namespace    https://github.com/nurullahakin
 // @version      2025-09-29
 // @description  Visible commits list on PR commit diffs

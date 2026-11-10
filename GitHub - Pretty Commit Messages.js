@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Pretty Commit Messages
+// @name         GitHub - Pretty Commit Messages
 // @namespace    https://github.com/nurullahakin
 // @version      2026-03-24
 // @description  Formats commit messages in a more readable way.

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         PR Image Viewer
+// @name         GitHub - PR - Image Viewer
 // @namespace    https://github.com/nurullahakin
 // @version      2026-11-04
 // @description  Click an image in the GitHub PR description to open it in a viewer with prev/next and keyboard navigation.

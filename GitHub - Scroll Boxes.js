@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         GitHub Scroll Boxes
+// @name         GitHub - Scroll Boxes
 // @namespace    https://github.com/nurullahakin
 // @version      2026-01-27
 // @description  Create arbitrary scroll boxes in GitHub issues by placing special markers in the issue body.

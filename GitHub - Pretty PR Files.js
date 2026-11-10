@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Pretty PR Files
+// @name         GitHub - Pretty PR Files
 // @namespace    https://github.com/nurullahakin
 // @version      2025-11-14
 // @description  Makes the files more readable by spacing.
