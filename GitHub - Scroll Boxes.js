@@ -62,12 +62,16 @@
         let customStyleEl = document.createElement("style");
         customStyleEl.id = "scroll-box-styles";
         customStyleEl.textContent = customStyleText;
-        document.head.append(customStyleEl);
+        // Appended to <html> rather than <head>: GitHub's head merging removes unknown <style> elements.
+        document.documentElement.append(customStyleEl);
     }
 
     function getScrollContainerMarkerEls() {
         let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
         let scrollContainerMarkerEls = [];
+        if (!issueBodyEl) {
+            return scrollContainerMarkerEls;
+        }
         let scrollContainerMarkerElCandidates = issueBodyEl.querySelectorAll("p");
         for (let candEl of scrollContainerMarkerElCandidates) {
             if (isScrollContainerMarker(candEl)) {
@@ -77,26 +81,12 @@
         return scrollContainerMarkerEls;
     }
 
-    function handleAutoRender() {
-        let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
-        let checkboxes = issueBodyEl.querySelectorAll("input[type=checkbox]");
-        for (let checkbox of checkboxes) {
-            if (checkbox.isClickListenerAdded) {
-                continue;
-            }
-            checkbox.addEventListener("click", () => {
-                setTimeout(() => {
-                    renderScrollContainers();
-                    setTimeout(() => {
-                        renderScrollContainers();
-                    }, 1000);
-                }, 1000);
-            });
-            checkbox.isClickListenerAdded = true;
-        }
-    }
-
     function renderScrollContainers() {
+        // Re-add styles if they were removed after the containers were rendered.
+        if (document.querySelector(".scroll-container")) {
+            injectCustomStyles();
+        }
+
         let scrollContainerMarkerEls = getScrollContainerMarkerEls();
         if (scrollContainerMarkerEls.length == 0) {
             return;
@@ -118,9 +108,29 @@
 
             markerEls[1].remove();
         }
-
-        handleAutoRender();
     }
 
+    // GitHub re-renders the issue/PR body (hydration, checkbox toggles, edits), which reverts
+    // the containers. Re-render on every DOM change, and re-check a few times after load.
+    let isRenderScheduled = false;
+    function scheduleRender() {
+        if (isRenderScheduled) {
+            return;
+        }
+        isRenderScheduled = true;
+        requestAnimationFrame(() => {
+            isRenderScheduled = false;
+            renderScrollContainers();
+        });
+    }
+
+    new MutationObserver(scheduleRender).observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+    });
+
     renderScrollContainers();
+    for (let delay of [500, 1000, 2000, 4000]) {
+        setTimeout(renderScrollContainers, delay);
+    }
 })();
