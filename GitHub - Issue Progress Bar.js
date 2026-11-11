@@ -14,17 +14,42 @@
 
     // #region ==================== APP
 
+    // GitHub re-renders the issue header (hydration, checkbox toggles, edits), which removes
+    // the progress elements. Re-render on every DOM change, and re-check a few times after load.
+    let isRenderScheduled = false;
+    function scheduleRender() {
+        if (isRenderScheduled) {
+            return;
+        }
+        isRenderScheduled = true;
+        requestAnimationFrame(() => {
+            isRenderScheduled = false;
+            showProgress();
+        });
+    }
+
+    new MutationObserver(scheduleRender).observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+    });
+
     window.addEventListener("load", function () {
         showProgress();
+        for (let delay of [500, 1000, 2000, 4000]) {
+            setTimeout(showProgress, delay);
+        }
     });
 
     function showProgress() {
         let headerStateEl = qs('[data-testid="header-state"]');
+        if (!headerStateEl || qs("#issue-progress")) {
+            return;
+        }
         let headerStateContainer = headerStateEl.parentElement;
         headerStateContainer.classList.add("header-state-container");
 
         let newElsContainer = htmlFromString(`
-            <div style="display: flex; flex-grow: 1;"></div>
+            <div id="issue-progress" style="display: flex; flex-grow: 1;"></div>
         `)[0];
         headerStateContainer.parentElement.append(newElsContainer);
 
@@ -48,7 +73,8 @@
                 </div>
             `)[0];
             newElsContainer.append(progressBadgeEl);
-            document.head.append(
+            appendStyle(
+                "issue-progress-badge-styles",
                 htmlFromString(`
                     <style>
                         .issue-progress-badge {
@@ -124,7 +150,8 @@
                 </div>
             `)[0];
             newElsContainer.append(progressBarEl);
-            document.head.append(
+            appendStyle(
+                "issue-progress-bar-styles",
                 htmlFromString(`
                     <style>
                         .issue-progress-bar-container {
@@ -142,6 +169,16 @@
                 `)[0]
             );
         }
+    }
+
+    // Appended to <html> rather than <head>: GitHub's head merging removes unknown <style> elements.
+    // Skipped if already present, since showProgress() may run again after a re-render.
+    function appendStyle(id, styleEl) {
+        if (qs("#" + id)) {
+            return;
+        }
+        styleEl.id = id;
+        document.documentElement.append(styleEl);
     }
 
     // #endregion
