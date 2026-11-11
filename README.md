@@ -2,7 +2,7 @@
 
 Userscripts for [Tampermonkey](https://www.tampermonkey.net/), mostly for making GitHub issues and pull requests easier to read.
 
-Live demos: [issue #4](https://github.com/nurullahakin/tampermonkey-scripts/issues/4), [PR #5](https://github.com/nurullahakin/tampermonkey-scripts/pull/5)
+**[Screenshots](SCREENSHOTS.md)** · Live demos: [issue #4](https://github.com/nurullahakin/tampermonkey-scripts/issues/4), [PR #5](https://github.com/nurullahakin/tampermonkey-scripts/pull/5)
 
 ## Scripts
 
