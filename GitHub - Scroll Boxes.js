@@ -34,6 +34,39 @@
             return;
         }
         let customStyleText = `
+            .scroll-box-wrapper {
+                position: relative;
+            }
+            .scroll-box-copy-btn {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 28px;
+                height: 28px;
+                padding: 0;
+                border: 1px solid var(--borderColor-default, #d1d9e0);
+                border-radius: 6px;
+                background-color: var(--bgColor-default, #fff);
+                color: var(--fgColor-muted, #59636e);
+                cursor: pointer;
+            }
+            .scroll-box-copy-btn:hover {
+                background-color: var(--bgColor-muted, #f6f8fa);
+            }
+            .scroll-box-copy-btn .octicon-check {
+                display: none;
+                color: var(--fgColor-success, #1a7f37);
+            }
+            .scroll-box-copy-btn.copied .octicon-copy {
+                display: none;
+            }
+            .scroll-box-copy-btn.copied .octicon-check {
+                display: inline-block;
+            }
             .scroll-container {
                 max-height: 50vh;
                 overflow: auto;
@@ -98,6 +131,34 @@
         return pairs;
     }
 
+    const COPY_ICON =
+        '<svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="currentColor" class="octicon octicon-copy"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg>';
+    const CHECK_ICON =
+        '<svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="currentColor" class="octicon octicon-check"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>';
+
+    function createCopyButton(scrollContainerEl) {
+        let buttonEl = document.createElement("button");
+        buttonEl.type = "button";
+        buttonEl.className = "scroll-box-copy-btn";
+        buttonEl.setAttribute("aria-label", "Copy");
+        buttonEl.title = "Copy";
+        buttonEl.innerHTML = COPY_ICON + CHECK_ICON;
+        let resetTimer;
+        buttonEl.addEventListener("click", async () => {
+            await navigator.clipboard.writeText(scrollContainerEl.innerText.trim());
+            buttonEl.classList.add("copied");
+            buttonEl.setAttribute("aria-label", "Copied!");
+            buttonEl.title = "Copied!";
+            clearTimeout(resetTimer);
+            resetTimer = setTimeout(() => {
+                buttonEl.classList.remove("copied");
+                buttonEl.setAttribute("aria-label", "Copy");
+                buttonEl.title = "Copy";
+            }, 2000);
+        });
+        return buttonEl;
+    }
+
     function renderScrollContainers() {
         // Re-add styles if they were removed after the containers were rendered.
         if (document.querySelector(".scroll-container")) {
@@ -112,13 +173,23 @@
         injectCustomStyles();
 
         for (let markerEls of scrollContainerMarkers) {
+            let wrapperEl = document.createElement("div");
+            wrapperEl.className = "scroll-box-wrapper";
             let scrollContainerEl = document.createElement("div");
             scrollContainerEl.className = "scroll-container";
+            let copyButtonEl = createCopyButton(scrollContainerEl);
+            wrapperEl.append(scrollContainerEl, copyButtonEl);
+            // Keep the button clear of the vertical scrollbar, whatever its width. The content box
+            // shrinks when a scrollbar appears, so the observer also fires on scrollbar changes.
+            new ResizeObserver(() => {
+                let scrollbarWidth = scrollContainerEl.offsetWidth - scrollContainerEl.clientWidth;
+                copyButtonEl.style.right = `${8 + scrollbarWidth}px`;
+            }).observe(scrollContainerEl);
 
-            markerEls[0].replaceWith(scrollContainerEl);
+            markerEls[0].replaceWith(wrapperEl);
 
-            while (scrollContainerEl.nextElementSibling && scrollContainerEl.nextElementSibling !== markerEls[1]) {
-                scrollContainerEl.append(scrollContainerEl.nextElementSibling);
+            while (wrapperEl.nextElementSibling && wrapperEl.nextElementSibling !== markerEls[1]) {
+                scrollContainerEl.append(wrapperEl.nextElementSibling);
             }
 
             markerEls[1].remove();
