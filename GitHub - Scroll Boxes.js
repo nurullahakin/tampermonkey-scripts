@@ -42,7 +42,7 @@
                 top: 8px;
                 right: 8px;
                 z-index: 1;
-                display: flex;
+                display: none;
                 align-items: center;
                 justify-content: center;
                 width: 28px;
@@ -53,6 +53,9 @@
                 background-color: var(--bgColor-default, #fff);
                 color: var(--fgColor-muted, #59636e);
                 cursor: pointer;
+            }
+            .scroll-box-wrapper.has-overflow .scroll-box-copy-btn {
+                display: flex;
             }
             .scroll-box-copy-btn:hover {
                 background-color: var(--bgColor-muted, #f6f8fa);
@@ -67,9 +70,12 @@
             .scroll-box-copy-btn.copied .octicon-check {
                 display: inline-block;
             }
+            /* Box visuals only apply while the content actually overflows (.has-overflow). */
             .scroll-container {
                 max-height: 50vh;
                 overflow: auto;
+            }
+            .has-overflow > .scroll-container {
                 background-color: hsl(0, 0%, 0%, 0.025);
             }
             .scroll-container [class*="TaskListItems-module__task-list-item--"] > div.position-relative,
@@ -80,14 +86,14 @@
             {
                 margin-right: 0 !important;
             }
-            .scroll-container pre {
+            .has-overflow > .scroll-container pre {
                 background-color: hsl(210deg 28% 96%);
             }
             @media (prefers-color-scheme: dark) {
-                .scroll-container {
+                .has-overflow > .scroll-container {
                     background-color: hsl(0, 0%, 100%, 0.05);
                 }
-                .scroll-container pre {
+                .has-overflow > .scroll-container pre {
                     background-color: hsl(215deg 25% 15%);
                 }
             }
@@ -179,9 +185,14 @@
             scrollContainerEl.className = "scroll-container";
             let copyButtonEl = createCopyButton(scrollContainerEl);
             wrapperEl.append(scrollContainerEl, copyButtonEl);
-            // Keep the button clear of the vertical scrollbar, whatever its width. The content box
-            // shrinks when a scrollbar appears, so the observer also fires on scrollbar changes.
+            // Show the box only while its content overflows, and keep the button clear of the
+            // vertical scrollbar. The content box shrinks when a scrollbar appears, so the
+            // observer also fires on scrollbar changes.
             new ResizeObserver(() => {
+                let hasOverflow =
+                    scrollContainerEl.scrollHeight > scrollContainerEl.clientHeight ||
+                    scrollContainerEl.scrollWidth > scrollContainerEl.clientWidth;
+                wrapperEl.classList.toggle("has-overflow", hasOverflow);
                 let scrollbarWidth = scrollContainerEl.offsetWidth - scrollContainerEl.clientWidth;
                 copyButtonEl.style.right = `${8 + scrollbarWidth}px`;
             }).observe(scrollContainerEl);
