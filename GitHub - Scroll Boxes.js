@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         GitHub - Scroll Boxes
 // @namespace    https://github.com/nurullahakin
-// @version      2026-01-27
-// @description  Create arbitrary scroll boxes in GitHub issues by placing special markers in the issue body.
+// @version      2026-11-16
+// @description  Create arbitrary scroll boxes in GitHub issues/PRs by placing special markers in the body or comments.
 // @author       Nurullah Akın
 // @match        https://github.com/*/*/issues/*
 // @match        https://github.com/*/*/pull/*
@@ -66,19 +66,36 @@
         document.documentElement.append(customStyleEl);
     }
 
-    function getScrollContainerMarkerEls() {
-        let issueBodyEl = document.querySelector("#issue-body-viewer, .timeline-comment-header + div");
-        let scrollContainerMarkerEls = [];
-        if (!issueBodyEl) {
-            return scrollContainerMarkerEls;
-        }
-        let scrollContainerMarkerElCandidates = issueBodyEl.querySelectorAll("p");
-        for (let candEl of scrollContainerMarkerElCandidates) {
-            if (isScrollContainerMarker(candEl)) {
-                scrollContainerMarkerEls.push(candEl);
+    // Returns marker pairs found in the issue/PR body and all comments. Markers are paired
+    // per parent element, so an unpaired marker in one comment never swallows another's content.
+    function getScrollContainerMarkerPairs() {
+        let bodyEls = document.querySelectorAll(
+            "#issue-body-viewer, .timeline-comment-header + div, .comment-body, .markdown-body"
+        );
+        let markerElsByParent = new Map();
+        let seenEls = new Set();
+        for (let bodyEl of bodyEls) {
+            for (let candEl of bodyEl.querySelectorAll("p")) {
+                if (seenEls.has(candEl) || !isScrollContainerMarker(candEl)) {
+                    continue;
+                }
+                seenEls.add(candEl);
+                let parentEl = candEl.parentElement;
+                if (!markerElsByParent.has(parentEl)) {
+                    markerElsByParent.set(parentEl, []);
+                }
+                markerElsByParent.get(parentEl).push(candEl);
             }
         }
-        return scrollContainerMarkerEls;
+        let pairs = [];
+        for (let markerEls of markerElsByParent.values()) {
+            for (let pair of chunk(markerEls, 2)) {
+                if (pair.length == 2) {
+                    pairs.push(pair);
+                }
+            }
+        }
+        return pairs;
     }
 
     function renderScrollContainers() {
@@ -87,14 +104,12 @@
             injectCustomStyles();
         }
 
-        let scrollContainerMarkerEls = getScrollContainerMarkerEls();
-        if (scrollContainerMarkerEls.length == 0) {
+        let scrollContainerMarkers = getScrollContainerMarkerPairs();
+        if (scrollContainerMarkers.length == 0) {
             return;
         }
 
         injectCustomStyles();
-
-        let scrollContainerMarkers = chunk(scrollContainerMarkerEls, 2);
 
         for (let markerEls of scrollContainerMarkers) {
             let scrollContainerEl = document.createElement("div");
@@ -102,7 +117,7 @@
 
             markerEls[0].replaceWith(scrollContainerEl);
 
-            while (!isScrollContainerMarker(scrollContainerEl.nextElementSibling)) {
+            while (scrollContainerEl.nextElementSibling && scrollContainerEl.nextElementSibling !== markerEls[1]) {
                 scrollContainerEl.append(scrollContainerEl.nextElementSibling);
             }
 
