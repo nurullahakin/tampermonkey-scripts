@@ -1,0 +1,5 @@
+{
+    "greeting": "Hello",
+    "fallbackName": "stranger",
+    "maxTitleLength": 40
+}
